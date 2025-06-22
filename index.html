@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags (English Default) -->
+    <title>BeavFlatten - Zip Flattener Tool</title>
+    <meta
+      name="description"
+      content="Instantly flatten complex directory structures from your ZIP files. A professional tool by Stark Yuan."
+    />
+    <meta
+      name="keywords"
+      content="zip flattener, file organizer, directory flatten, archive tool, stark yuan"
+    />
+    <meta name="author" content="Stark Yuan" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="BeavFlatten - Zip Flattener Tool" />
+    <meta
+      property="og:description"
+      content="Instantly flatten complex directory structures from your ZIP files."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://YOUR_GITHUB_PAGES_URL_HERE" />
+    <meta
+      property="og:image"
+      content="https://YOUR_GITHUB_PAGES_URL_HERE/assets/og-image.png"
+    />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BeavFlatten - Zip Flattener Tool" />
+    <meta
+      name="twitter:description"
+      content="Instantly flatten complex directory structures from your ZIP files."
+    />
+    <meta
+      name="twitter:image"
+      content="https://YOUR_GITHUB_PAGES_URL_HERE/assets/twitter-image.png"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .cta-button {
+        @apply inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white border border-transparent rounded-lg transition-all duration-300 ease-in-out;
+      }
+      .cta-deepseek {
+        @apply bg-sky-600 hover:bg-sky-500 focus:ring-4 focus:ring-sky-500/50 transform hover:-translate-y-1;
+      }
+      .cta-geminipro {
+        @apply bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:ring-slate-500/50 transform hover:-translate-y-1;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-900 text-slate-50 antialiased">
+    <div
+      class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden p-4"
+    >
+      <!-- Decorative background -->
+      <div
+        class="absolute inset-0 bg-grid-slate-700/[0.05] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"
+      ></div>
+
+      <!-- Language Switcher -->
+      <nav class="absolute top-0 right-0 p-6 z-20">
+        <div class="relative" id="lang-switcher">
+          <button
+            id="lang-menu-button"
+            class="flex items-center space-x-2 text-slate-400 hover:text-slate-200 transition-colors duration-300"
+          >
+            <svg
+              class="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M10.5 21l-5.25-11.25L21 21m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12v-.008zm0-3.75h.008v.008H12v-.008zm0-3.75h.008v.008H12v-.008zM12 6h.008v.008H12V6z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span id="current-lang-text" class="font-semibold">EN</span>
+          </button>
+          <div
+            id="lang-menu"
+            class="hidden absolute right-0 mt-2 w-32 bg-slate-800 rounded-lg shadow-lg py-1 ring-1 ring-slate-700"
+          >
+            <a
+              href="?lang=en"
+              class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+              >English</a
+            >
+            <a
+              href="?lang=zh-CN"
+              class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+              >简体中文</a
+            >
+            <a
+              href="?lang=zh-TW"
+              class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+              >繁體中文</a
+            >
+          </div>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="text-center z-10">
+        <h1
+          data-i18n="title"
+          class="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-200 to-slate-400"
+        >
+          BeavFlatten
+        </h1>
+        <p
+          data-i18n="subtitle"
+          class="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-slate-400"
+        >
+          Instantly flatten complex directory structures from your ZIP files.
+        </p>
+
+        <div
+          class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-6"
+        >
+          <a
+            href="./version-deepseekR1/index.html"
+            class="cta-button cta-deepseek w-full sm:w-auto"
+          >
+            <span data-i18n="cta.deepseek">DeepSeek Version</span>
+          </a>
+          <a
+            href="./version-GeminiPro/index.html"
+            class="cta-button cta-geminipro w-full sm:w-auto"
+          >
+            <span data-i18n="cta.gemini">GeminiPro Version</span>
+          </a>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="absolute bottom-0 p-6 text-center w-full z-10">
+        <p class="text-slate-500 text-sm">
+          <span data-i18n="footer.craftedBy">Crafted with ❤️ by</span>
+          <a
+            href="https://github.com/yuanyuanyuan"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-slate-400 hover:text-sky-400 transition-colors"
+          >
+            Stark Yuan
+          </a>
+        </p>
+      </footer>
+    </div>
+    <script src="js/i18n.js"></script>
+  </body>
+</html>

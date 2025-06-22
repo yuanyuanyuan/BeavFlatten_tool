@@ -1,0 +1,27 @@
+{
+  "meta.title": "狸压侠 - 压缩包扁平化工具",
+  "meta.description": "快速将您 ZIP 文件中的复杂目录结构扁平化。一个由 Stark Yuan 打造的专业工具。",
+  "title": "狸压侠",
+  "subtitle": "快速将您 ZIP 文件中的复杂目录结构扁平化。",
+  "cta.deepseek": "DeepSeek 版本",
+  "cta.gemini": "GeminiPro 版本",
+  "footer.craftedBy": "由 Stark Yuan 精心打造",
+
+  "deepseek.title": "目录结构扁平化工具 (DeepSeek 版本)",
+  "deepseek.subtitle": "将ZIP压缩包中的目录结构扁平化，支持配置例外列表。",
+  "deepseek.config.title": "配置选项",
+  "deepseek.config.exceptionsLabel": "例外列表 (逗号分隔)",
+  "deepseek.config.exceptionsHelp": "输入不想排除的文件或目录名，多个用逗号分隔。",
+  "deepseek.fileInput.label": "选择ZIP文件",
+  "deepseek.buttons.process": "处理文件",
+  "deepseek.buttons.download": "下载处理后的文件",
+  "deepseek.stats.total": "总文件数",
+  "deepseek.stats.processed": "已处理",
+  "deepseek.stats.excluded": "已排除",
+  "deepseek.stats.exceptions": "例外文件",
+  "deepseek.preview.resultsTitle": "处理结果预览:",
+  "deepseek.preview.watermarkTitle": "署名文件预览:",
+  "deepseek.preview.excluded": "已排除",
+  "deepseek.preview.exception": "例外",
+  "deepseek.footer.back": "返回主页"
+}

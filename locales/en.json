@@ -1,0 +1,27 @@
+{
+  "meta.title": "BeavFlatten - Zip Flattener Tool",
+  "meta.description": "Instantly flatten complex directory structures from your ZIP files. A professional tool by Stark Yuan.",
+  "title": "BeavFlatten",
+  "subtitle": "Instantly flatten complex directory structures from your ZIP files.",
+  "cta.deepseek": "DeepSeek Version",
+  "cta.gemini": "GeminiPro Version",
+  "footer.craftedBy": "Crafted with ❤️ by",
+
+  "deepseek.title": "Directory Flattener Tool (DeepSeek Version)",
+  "deepseek.subtitle": "Flatten directory structures from ZIP archives, with support for configurable exception lists.",
+  "deepseek.config.title": "Configuration Options",
+  "deepseek.config.exceptionsLabel": "Exception List (comma-separated)",
+  "deepseek.config.exceptionsHelp": "Enter names of files or directories you don't want to exclude, separated by commas.",
+  "deepseek.fileInput.label": "Select ZIP File",
+  "deepseek.buttons.process": "Process File",
+  "deepseek.buttons.download": "Download Processed File",
+  "deepseek.stats.total": "Total Files",
+  "deepseek.stats.processed": "Processed",
+  "deepseek.stats.excluded": "Excluded",
+  "deepseek.stats.exceptions": "Exceptions",
+  "deepseek.preview.resultsTitle": "Processing Results Preview:",
+  "deepseek.preview.watermarkTitle": "Signature File Preview:",
+  "deepseek.preview.excluded": "Excluded",
+  "deepseek.preview.exception": "Exception",
+  "deepseek.footer.back": "Back to Home"
+}

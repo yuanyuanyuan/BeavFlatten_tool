@@ -1,0 +1,205 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const i18nHandler = {
+    // 定义支持的语言列表和默认语言
+    supportedLangs: ["en", "zh-CN", "zh-TW"],
+    defaultLang: "en",
+
+    /**
+     * 语言检测逻辑
+     * 优先级: URL 参数 'lang' > Cookie 'lang' > localStorage 'preferred-language' > 浏览器默认语言
+     */
+    detectLanguage() {
+      // 1. URL 参数
+      const urlLang = new URLSearchParams(window.location.search).get("lang");
+      if (urlLang && this.supportedLangs.includes(urlLang)) {
+        return urlLang;
+      }
+
+      // 2. Cookie
+      const cookieLang = (document.cookie.match(/lang=([^;]+)/) || [])[1];
+      if (cookieLang && this.supportedLangs.includes(cookieLang)) {
+        return cookieLang;
+      }
+
+      // 3. LocalStorage
+      const localLang = localStorage.getItem("preferred-language");
+      if (localLang && this.supportedLangs.includes(localLang)) {
+        return localLang;
+      }
+
+      // 4. 浏览器语言
+      const browserLang = navigator.language || navigator.userLanguage;
+      if (this.supportedLangs.includes(browserLang)) {
+        return browserLang;
+      }
+      if (browserLang.startsWith("zh")) {
+        if (browserLang.includes("TW") || browserLang.includes("HK"))
+          return "zh-TW";
+        return "zh-CN";
+      }
+      if (browserLang.startsWith("en")) {
+        return "en";
+      }
+
+      // 5. 默认语言
+      return this.defaultLang;
+    },
+
+    /**
+     * 异步加载指定语言的翻译文件
+     * @param {string} lang - 语言代码 (e.g., 'en')
+     */
+    async loadTranslations(lang) {
+      if (lang === this.defaultLang) {
+        // 如果是默认语言，则无需加载，因为内容已在HTML中硬编码
+        return {};
+      }
+      try {
+        const response = await fetch(`locales/${lang}.json`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error(`Could not load translation file for ${lang}:`, error);
+        return null; // 加载失败则返回 null
+      }
+    },
+
+    /**
+     * 将翻译应用到页面上
+     * @param {object} translations - 包含键值对的翻译对象
+     */
+    applyTranslations(translations) {
+      if (!translations) return;
+
+      // 更新页面主体内容
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.dataset.i18n;
+        if (translations[key]) {
+          el.textContent = translations[key];
+        }
+      });
+
+      // 更新 SEO 相关的 <head> 标签内容
+      this.updateMeta(
+        "meta.title",
+        document.title,
+        (value) => (document.title = value),
+        translations
+      );
+      this.updateMeta(
+        "meta.description",
+        'meta[name="description"]',
+        (el, value) => el.setAttribute("content", value),
+        translations
+      );
+      this.updateMeta(
+        "meta.keywords",
+        'meta[name="keywords"]',
+        (el, value) => el.setAttribute("content", value),
+        translations
+      );
+      this.updateMeta(
+        "meta.og.title",
+        'meta[property="og:title"]',
+        (el, value) => el.setAttribute("content", value),
+        translations
+      );
+      this.updateMeta(
+        "meta.og.description",
+        'meta[property="og:description"]',
+        (el, value) => el.setAttribute("content", value),
+        translations
+      );
+      this.updateMeta(
+        "meta.twitter.title",
+        'meta[name="twitter:title"]',
+        (el, value) => el.setAttribute("content", value),
+        translations
+      );
+      this.updateMeta(
+        "meta.twitter.description",
+        'meta[name="twitter:description"]',
+        (el, value) => el.setAttribute("content", value),
+        translations
+      );
+    },
+
+    /**
+     * 辅助函数：安全地更新元数据
+     */
+    updateMeta(key, selector, action, translations) {
+      if (translations[key]) {
+        if (selector === document.title) {
+          action(translations[key]);
+        } else {
+          const element = document.querySelector(selector);
+          if (element) {
+            action(element, translations[key]);
+          }
+        }
+      }
+    },
+
+    /**
+     * 更新UI元素，例如语言切换器的显示文本
+     * @param {string} lang - 当前语言
+     */
+    updateUI(lang) {
+      const langText = {
+        en: "EN",
+        "zh-CN": "简",
+        "zh-TW": "繁",
+      };
+      const currentLangEl = document.getElementById("current-lang-text");
+      if (currentLangEl) {
+        currentLangEl.textContent = langText[lang] || "EN";
+      }
+    },
+
+    /**
+     * 设置持久化存储
+     * @param {string} lang - 要保存的语言
+     */
+    persistLanguage(lang) {
+      localStorage.setItem("preferred-language", lang);
+      document.cookie = `lang=${lang};path=/;max-age=31536000;samesite=lax`; // 有效期一年
+    },
+
+    /**
+     * 初始化整个 i18n 流程
+     */
+    async init() {
+      const lang = this.detectLanguage();
+
+      this.persistLanguage(lang);
+      document.documentElement.lang = lang;
+      this.updateUI(lang);
+
+      const translations = await this.loadTranslations(lang);
+      this.applyTranslations(translations);
+    },
+  };
+
+  // 语言切换菜单的交互逻辑
+  const langSwitcher = document.getElementById("lang-switcher");
+  if (langSwitcher) {
+    const menuButton = document.getElementById("lang-menu-button");
+    const menu = document.getElementById("lang-menu");
+
+    menuButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      menu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", () => {
+      if (!menu.classList.contains("hidden")) {
+        menu.classList.add("hidden");
+      }
+    });
+  }
+
+  // 启动 i18n 处理器
+  i18nHandler.init();
+});
