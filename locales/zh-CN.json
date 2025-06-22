@@ -8,6 +8,7 @@
   "footer.craftedBy": "由 Stark Yuan 精心打造",
 
   "deepseek.title": "目录结构扁平化工具 (DeepSeek 版本)",
+  "deepseek.meta.description": "BeavFlatten 工具的 DeepSeek 版本，具有高级配置选项和详细的处理统计信息。",
   "deepseek.subtitle": "将ZIP压缩包中的目录结构扁平化，支持配置例外列表。",
   "deepseek.config.title": "配置选项",
   "deepseek.config.exceptionsLabel": "例外列表 (逗号分隔)",
@@ -26,6 +27,7 @@
   "deepseek.footer.back": "返回主页",
 
   "gemini.title": "狸压侠 (GeminiPro 版本)",
+  "gemini.meta.description": "BeavFlatten 工具的 GeminiPro 版本，具有直观的拖放界面和简化的用户体验。",
   "gemini.subtitle": "智能拖拽上传，即刻压平你的目录结构。",
   "gemini.upload.drag": "将 .zip 文件拖到此处，或",
   "gemini.upload.click": "点击上传",
@@ -35,5 +37,13 @@
   "gemini.buttons.download": "准备下载",
   "gemini.buttons.reset": "处理其他文件",
   "gemini.preview.title": "处理后的文件列表:",
-  "gemini.footer.back": "返回主页"
+  "gemini.footer.back": "返回主页",
+
+  "feedback.title": "提交反馈或功能需求",
+  "feedback.description": "扫描二维码或点击下方按钮，提交您宝贵的反馈。",
+  "feedback.button": "前往反馈表单",
+  
+  "demo.title": "功能演示",
+  "demo.placeholder.video": "演示视频即将上线。",
+  "demo.placeholder.description": "（或功能截图画廊）"
 }

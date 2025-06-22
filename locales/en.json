@@ -8,6 +8,7 @@
   "footer.craftedBy": "Crafted with ❤️ by",
 
   "deepseek.title": "Directory Flattener Tool (DeepSeek Version)",
+  "deepseek.meta.description": "The DeepSeek version of the BeavFlatten tool, featuring advanced configuration options and detailed processing statistics.",
   "deepseek.subtitle": "Flatten directory structures from ZIP archives, with support for configurable exception lists.",
   "deepseek.config.title": "Configuration Options",
   "deepseek.config.exceptionsLabel": "Exception List (comma-separated)",
@@ -26,6 +27,7 @@
   "deepseek.footer.back": "Back to Home",
 
   "gemini.title": "BeavFlatten (GeminiPro Version)",
+  "gemini.meta.description": "The GeminiPro version of the BeavFlatten tool, featuring an intuitive drag-and-drop interface and streamlined user experience.",
   "gemini.subtitle": "Intelligent drag-and-drop upload, flatten your directory structure instantly.",
   "gemini.upload.drag": "Drag and drop the .zip file here, or",
   "gemini.upload.click": "click to upload",
@@ -35,5 +37,13 @@
   "gemini.buttons.download": "Prepare Download",
   "gemini.buttons.reset": "Process Another File",
   "gemini.preview.title": "Processed File List:",
-  "gemini.footer.back": "Back to Home"
+  "gemini.footer.back": "Back to Home",
+
+  "feedback.title": "Submit Feedback or Feature Request",
+  "feedback.description": "Scan the QR code or click the button below to submit your valuable feedback.",
+  "feedback.button": "Go to Feedback Form",
+
+  "demo.title": "See It in Action",
+  "demo.placeholder.video": "Demo video coming soon.",
+  "demo.placeholder.description": "(Or a gallery of screenshots)"
 }

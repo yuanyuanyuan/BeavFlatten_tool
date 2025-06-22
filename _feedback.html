@@ -1,0 +1,67 @@
+<!-- Feedback Button and Modal -->
+<div id="feedback-fab" class="fixed bottom-8 right-8 z-50">
+  <button
+    id="open-feedback-btn"
+    class="bg-sky-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-sky-500 transition-transform transform hover:scale-110"
+  >
+    <svg
+      class="w-8 h-8"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 4.5v15m7.5-7.5h-15"
+      />
+    </svg>
+  </button>
+</div>
+
+<div
+  id="feedback-modal"
+  class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4"
+>
+  <div
+    class="bg-white rounded-lg shadow-xl w-full max-w-md mx-auto text-gray-800 transform transition-all opacity-0 scale-95"
+  >
+    <div class="p-6">
+      <div class="flex justify-between items-center border-b pb-3 mb-4">
+        <h3 class="text-2xl font-semibold" data-i18n="feedback.title">
+          Submit Feedback or Feature Request
+        </h3>
+        <button
+          id="close-feedback-btn"
+          class="text-gray-400 hover:text-gray-600 text-3xl leading-none"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="text-center space-y-4">
+        <p data-i18n="feedback.description">
+          Scan the QR code or click the button below to submit your valuable
+          feedback.
+        </p>
+        <div class="flex justify-center">
+          <img
+            src="assets/feishu-feedback-erweima.png"
+            alt="Feedback QR Code"
+            class="w-48 h-48 border rounded-lg"
+          />
+        </div>
+        <a
+          href="https://tyyvx5g86p.feishu.cn/share/base/form/shrcnvIeaD3Lhvdf2XKvQJRIpDh"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block w-full px-6 py-3 bg-sky-600 text-white font-semibold rounded-lg hover:bg-sky-500 transition-colors"
+          data-i18n="feedback.button"
+        >
+          Go to Feedback Form
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://your-url-here.com/assets/logo.png" alt="BeavFlatten Logo" width="150"/>
+  <img src="assets/logo.png" alt="BeavFlatten Logo" width="150"/>
   <h1 align="center">BeavFlatten (狸压侠)</h1>
   <p align="center">
     <i>"Like a beaver building a dam, we flatten your archives."</i>
