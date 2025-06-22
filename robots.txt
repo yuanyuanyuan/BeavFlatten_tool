@@ -3,4 +3,4 @@ User-agent: *
 Disallow:
 
 # Specify the location of the sitemap for better indexing.
-Sitemap: https://YOUR_GITHUB_PAGES_URL_HERE/sitemap.xml 
+Sitemap: https://yuanyuanyuan.github.io/BeavFlatten_tool/sitemap.xml 
