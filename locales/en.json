@@ -23,5 +23,17 @@
   "deepseek.preview.watermarkTitle": "Signature File Preview:",
   "deepseek.preview.excluded": "Excluded",
   "deepseek.preview.exception": "Exception",
-  "deepseek.footer.back": "Back to Home"
+  "deepseek.footer.back": "Back to Home",
+
+  "gemini.title": "BeavFlatten (GeminiPro Version)",
+  "gemini.subtitle": "Intelligent drag-and-drop upload, flatten your directory structure instantly.",
+  "gemini.upload.drag": "Drag and drop the .zip file here, or",
+  "gemini.upload.click": "click to upload",
+  "gemini.upload.hint": "Supports .zip format, recommended file size < 200MB",
+  "gemini.config.exclude": "Enable smart exclusion (hidden files, system files, etc.)",
+  "gemini.config.exceptions": "Exception List (do not exclude the following, comma-separated)",
+  "gemini.buttons.download": "Prepare Download",
+  "gemini.buttons.reset": "Process Another File",
+  "gemini.preview.title": "Processed File List:",
+  "gemini.footer.back": "Back to Home"
 }

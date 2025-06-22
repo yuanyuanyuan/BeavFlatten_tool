@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>压缩包扁平化工具 (Zip Flattener)</title>
+    <title>Directory Flattener Tool - GeminiPro Version</title>
 
-    <!-- 引入 Tailwind CSS 以实现现代化、响应式的界面设计 -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- 引入 Inter 字体，让界面看起来更专业 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,157 +14,270 @@
       rel="stylesheet"
     />
 
-    <!-- 引入核心库 JSZip 和 FileSaver.js -->
-    <!-- JSZip 用于在浏览器中处理 .zip 文件 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- FileSaver.js 用于触发浏览器下载文件 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
+    <script src="../js/i18n.js"></script>
+
     <style>
-      /* 应用 Inter 字体到整个页面 */
       body {
         font-family: "Inter", sans-serif;
       }
-      /* 自定义文件上传按钮的样式，隐藏原生丑陋的 input */
       .file-input-button {
         cursor: pointer;
       }
-      /* 为拖拽区域添加过渡效果 */
       #drop-zone {
         transition: background-color 0.3s ease, border-color 0.3s ease;
       }
     </style>
   </head>
   <body
-    class="bg-gray-50 text-gray-800 flex items-center justify-center min-h-screen p-4"
+    class="bg-slate-100 text-slate-800 antialiased flex items-center justify-center min-h-screen p-4"
   >
-    <div
-      class="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-6 md:p-8 space-y-6"
-    >
-      <!-- 1. 标题和描述 -->
-      <div class="text-center">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
-          压缩包扁平化工具
-        </h1>
-        <p class="mt-2 text-gray-600">
-          上传 .zip
-          文件，工具将解压并将所有文件移动到顶层，并根据原始路径重命名。
-        </p>
-      </div>
-
-      <!-- 2. 上传区域 -->
-      <div id="upload-section">
-        <div
-          id="drop-zone"
-          class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-8 md:p-12 text-center hover:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+    <div class="w-full max-w-2xl mx-auto">
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <header
+          class="relative bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 text-center"
         >
-          <svg
-            class="mx-auto h-12 w-12 text-gray-400"
-            stroke="currentColor"
-            fill="none"
-            viewBox="0 0 48 48"
-            aria-hidden="true"
-          >
-            <path
-              d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4V12a4 4 0 014-4h12l4 4h12a4 4 0 014 4z"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <span
-            id="drop-zone-text"
-            class="mt-2 block text-sm font-semibold text-gray-900"
-          >
-            将 .zip 文件拖到此处，或
-            <label
-              for="file-upload"
-              class="file-input-button text-indigo-600 hover:text-indigo-500"
-              >点击上传</label
-            >
-          </span>
-          <p class="text-xs text-gray-500 mt-1">
-            支持 .zip 格式，建议文件大小 < 200MB
+          <!-- Language Switcher -->
+          <nav class="absolute top-4 right-4 z-20">
+            <div class="relative" id="lang-switcher">
+              <button
+                id="lang-menu-button"
+                class="flex items-center space-x-2 text-slate-300 hover:text-white transition-colors duration-300"
+              >
+                <svg
+                  class="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10.5 21l-5.25-11.25L21 21m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12v-.008zm0-3.75h.008v.008H12v-.008zm0-3.75h.008v.008H12v-.008zM12 6h.008v.008H12V6z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span id="current-lang-text" class="font-semibold">EN</span>
+              </button>
+              <div
+                id="lang-menu"
+                class="hidden absolute right-0 mt-2 w-32 bg-slate-800 rounded-lg shadow-lg py-1 ring-1 ring-slate-700"
+              >
+                <a
+                  href="?lang=en"
+                  class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                  >English</a
+                >
+                <a
+                  href="?lang=zh-CN"
+                  class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                  >简体中文</a
+                >
+                <a
+                  href="?lang=zh-TW"
+                  class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                  >繁體中文</a
+                >
+              </div>
+            </div>
+          </nav>
+          <h1 class="text-3xl font-bold" data-i18n="gemini.title">
+            BeavFlatten (GeminiPro Version)
+          </h1>
+          <p class="mt-2 text-slate-300" data-i18n="gemini.subtitle">
+            Intelligent drag-and-drop upload, flatten your directory structure
+            instantly.
           </p>
-          <input
-            id="file-upload"
-            name="file-upload"
-            type="file"
-            class="sr-only"
-            accept=".zip"
-          />
-        </div>
+        </header>
 
-        <!-- 排除选项 -->
-        <div class="mt-4 flex items-center justify-center">
-          <input
-            id="exclude-hidden"
-            type="checkbox"
-            checked
-            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-          />
-          <label for="exclude-hidden" class="ml-2 block text-sm text-gray-900"
-            >排除隐藏文件和目录 (例如 .git, .DS_Store)</label
-          >
+        <div class="p-6 md:p-8 space-y-6">
+          <div id="upload-section">
+            <div
+              id="drop-zone"
+              class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-8 text-center hover:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+            >
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+                aria-hidden="true"
+              >
+                <path
+                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4V12a4 4 0 014-4h12l4 4h12a4 4 0 014 4z"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span
+                id="drop-zone-text"
+                class="mt-2 block text-sm font-semibold text-gray-900"
+              >
+                <span data-i18n="gemini.upload.drag"
+                  >Drag and drop the .zip file here, or</span
+                >
+                <label
+                  for="file-upload"
+                  class="file-input-button text-sky-600 hover:text-sky-500"
+                  data-i18n="gemini.upload.click"
+                >
+                  click to upload</label
+                >
+              </span>
+              <p
+                class="text-xs text-gray-500 mt-1"
+                data-i18n="gemini.upload.hint"
+              >
+                Supports .zip format, recommended file size &lt; 200MB
+              </p>
+              <input
+                id="file-upload"
+                name="file-upload"
+                type="file"
+                class="sr-only"
+                accept=".zip"
+              />
+            </div>
+
+            <div class="mt-6 p-4 border border-slate-200 rounded-lg space-y-4">
+              <div class="flex items-center">
+                <input
+                  id="exclude-hidden"
+                  type="checkbox"
+                  checked
+                  class="h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-600"
+                />
+                <label
+                  for="exclude-hidden"
+                  class="ml-3 block text-sm font-medium text-gray-900"
+                  data-i18n="gemini.config.exclude"
+                >
+                  Enable smart exclusion (hidden files, system files,
+                  etc.)</label
+                >
+              </div>
+              <div id="exception-section">
+                <label
+                  for="exception-list"
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="gemini.config.exceptions"
+                >
+                  Exception List (do not exclude the following,
+                  comma-separated)</label
+                >
+                <div class="mt-1">
+                  <input
+                    type="text"
+                    name="exception-list"
+                    id="exception-list"
+                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 sm:text-sm p-2"
+                    value=".cursor"
+                    placeholder=".cursor, __pycache__, node_modules"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="result-section" class="hidden space-y-4">
+            <div id="summary" class="text-center p-4 bg-gray-100 rounded-lg">
+              <p id="summary-text" class="font-medium text-gray-700"></p>
+            </div>
+
+            <button
+              id="download-btn"
+              disabled
+              class="w-full flex items-center justify-center rounded-md border border-transparent bg-green-600 px-8 py-3 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-slate-400 disabled:cursor-not-allowed"
+            >
+              <svg
+                id="download-icon"
+                class="h-5 w-5 mr-2"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.7a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span id="download-btn-text" data-i18n="gemini.buttons.download"
+                >Prepare Download</span
+              >
+            </button>
+
+            <div
+              class="max-h-60 overflow-y-auto rounded-lg border border-gray-200 p-4"
+            >
+              <h3
+                class="text-lg font-semibold mb-2"
+                data-i18n="gemini.preview.title"
+              >
+                Processed File List:
+              </h3>
+              <ul id="file-list" class="space-y-1 text-sm text-gray-600"></ul>
+            </div>
+
+            <button
+              id="reset-btn"
+              class="w-full text-sm font-semibold text-sky-600 hover:text-sky-500"
+              data-i18n="gemini.buttons.reset"
+            >
+              Process Another File
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- 3. 进度和结果展示区域 -->
-      <div id="result-section" class="hidden space-y-4">
-        <!-- 状态摘要 -->
-        <div id="summary" class="text-center p-4 bg-gray-100 rounded-lg">
-          <p id="summary-text" class="font-medium text-gray-700"></p>
-        </div>
-
-        <!-- 下载按钮 -->
-        <button
-          id="download-btn"
-          disabled
-          class="w-full flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          <svg
-            id="download-icon"
-            class="h-5 w-5 mr-2"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
+      <footer class="text-center mt-4">
+        <p class="text-xs text-slate-500">
+          <span data-i18n="footer.craftedBy">Crafted with ❤️ by</span>
+          <a
+            href="https://github.com/yuanyuanyuan"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-sky-600 hover:text-sky-500"
           >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm.75-11.25a.75.75 0 00-1.5 0v4.59L7.3 9.7a.75.75 0 00-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V6.75z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <span id="download-btn-text">准备下载</span>
-        </button>
-
-        <!-- 文件列表 -->
-        <div
-          class="max-h-60 overflow-y-auto rounded-lg border border-gray-200 p-4"
-        >
-          <h3 class="text-lg font-semibold mb-2">处理后的文件列表:</h3>
-          <ul id="file-list" class="space-y-1 text-sm text-gray-600">
-            <!-- 文件项将通过 JS 动态添加 -->
-          </ul>
-        </div>
-
-        <!-- 返回按钮 -->
-        <button
-          id="reset-btn"
-          class="w-full text-sm font-semibold text-indigo-600 hover:text-indigo-500"
-        >
-          处理其他文件
-        </button>
-      </div>
+            Stark Yuan
+          </a>
+        </p>
+        <p class="text-xs text-slate-400 mt-2">
+          <a
+            href="../index.html"
+            class="hover:underline"
+            data-i18n="gemini.footer.back"
+            >Back to Home</a
+          >
+        </p>
+      </footer>
     </div>
 
     <script>
+      // =================================================================
+      // Zip Flattener Tool - Version 3.0 (Branded by Stark)
+      //
+      // A client-side tool to flatten ZIP archives with advanced exclusion rules.
+      //
+      // Author: Stark
+      // GitHub: https://github.com/yuanyuanyuan
+      // =================================================================
+
       // --- DOM 元素获取 ---
       const dropZone = document.getElementById("drop-zone");
       const fileUpload = document.getElementById("file-upload");
-      const dropZoneText = document.getElementById("drop-zone-text");
       const excludeHiddenCheckbox = document.getElementById("exclude-hidden");
+      const exceptionListInput = document.getElementById("exception-list");
+      const exceptionSection = document.getElementById("exception-section");
 
       const uploadSection = document.getElementById("upload-section");
       const resultSection = document.getElementById("result-section");
@@ -183,22 +294,30 @@
       // --- 核心处理逻辑 ---
       async function handleFile(file) {
         if (!file || !file.name.toLowerCase().endsWith(".zip")) {
-          alert("请上传一个 .zip 格式的文件。");
+          // 使用自定义的模态框或提示，避免使用 alert
+          summaryText.textContent = "错误：请上传一个 .zip 格式的文件。";
+          // 暂时简单处理，实际项目中可替换为更美观的提示组件
+          setTimeout(() => {
+            if (summaryText.textContent.startsWith("错误"))
+              summaryText.textContent = "";
+          }, 3000);
           return;
         }
 
         originalFileName = file.name.replace(/\.zip$/i, "");
-
-        // 切换界面视图
         uploadSection.classList.add("hidden");
         resultSection.classList.remove("hidden");
-
         summaryText.textContent = "正在读取和解压文件... 请稍候。";
         fileList.innerHTML = "";
         downloadBtn.disabled = true;
         downloadBtnText.textContent = "正在处理...";
 
         try {
+          const exceptions = exceptionListInput.value
+            .split(",")
+            .map((item) => item.trim())
+            .filter((item) => item.length > 0);
+
           const zip = await JSZip.loadAsync(file);
           const newZip = new JSZip();
 
@@ -206,52 +325,50 @@
           let excludedCount = 0;
 
           const filesToProcess = [];
-          zip.forEach((relativePath, zipEntry) => {
-            // 我们只处理文件，跳过目录
-            if (!zipEntry.dir) {
-              filesToProcess.push(zipEntry);
-            }
+          zip.forEach((_, zipEntry) => {
+            // relativePath in _
+            if (!zipEntry.dir) filesToProcess.push(zipEntry);
           });
 
-          summaryText.textContent = `解压完成，发现 ${filesToProcess.length} 个文件，开始处理...`;
+          summaryText.textContent = `解压完成，发现 ${filesToProcess.length} 个文件，开始应用规则...`;
 
           for (const zipEntry of filesToProcess) {
             const originalPath = zipEntry.name;
 
-            // 检查是否需要排除隐藏文件/目录
-            const exclude =
-              excludeHiddenCheckbox.checked &&
-              originalPath.split("/").some((part) => part.startsWith("."));
+            let shouldExclude = false;
+            if (excludeHiddenCheckbox.checked) {
+              const pathParts = originalPath.split("/");
+              const isHidden = pathParts.some((part) => part.startsWith("."));
 
-            if (exclude) {
+              if (isHidden) {
+                const isException = pathParts.some((part) =>
+                  exceptions.includes(part)
+                );
+                if (!isException) {
+                  shouldExclude = true;
+                }
+              }
+            }
+
+            if (shouldExclude) {
               excludedCount++;
-              // 可选：在列表中显示被排除的文件
-              // const li = document.createElement('li');
-              // li.className = 'text-gray-400 line-through';
-              // li.textContent = `已排除: ${originalPath}`;
-              // fileList.appendChild(li);
             } else {
               processedCount++;
-
-              // 执行重命名规则：将 '/' 替换为 '--'
               const newName = originalPath.replace(/\//g, "--");
-
-              // 将文件内容添加到新的 zip 实例中
               const content = await zipEntry.async("blob");
               newZip.file(newName, content);
 
-              // 在界面上显示处理后的文件
               const li = document.createElement("li");
               li.className = "flex items-center";
-              li.innerHTML = `<svg class="h-4 w-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span>${newName}</span>`;
+              li.innerHTML = `<svg class="h-4 w-4 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> <span class="truncate">${newName}</span>`;
               fileList.appendChild(li);
             }
-
-            // 更新摘要
-            summaryText.textContent = `已处理: ${processedCount} | 已排除: ${excludedCount}`;
           }
 
-          // 所有文件处理完毕
+          // 方案三：成果"水印" (Output "Watermark")
+          const creditContent = `此压缩包由 Stark 创建的"压缩包扁平化工具"生成。\n了解更多或获取该工具，请访问：https://github.com/yuanyuanyuan`;
+          newZip.file("_credit_by_stark.txt", creditContent);
+
           summaryText.textContent = `处理完成！成功转换 ${processedCount} 个文件，排除了 ${excludedCount} 个文件。`;
 
           if (processedCount > 0) {
@@ -270,41 +387,38 @@
       }
 
       // --- 事件监听器 ---
-
-      // 点击上传
       fileUpload.addEventListener("change", (event) => {
-        if (event.target.files.length > 0) {
-          handleFile(event.target.files[0]);
-        }
+        if (event.target.files.length > 0) handleFile(event.target.files[0]);
       });
 
-      // 拖拽上传
-      dropZone.addEventListener("dragover", (event) => {
-        event.preventDefault(); // 必须阻止默认行为，才能触发 drop 事件
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
         dropZone.classList.add("bg-indigo-50", "border-indigo-500");
       });
-      dropZone.addEventListener("dragleave", (event) => {
-        event.preventDefault();
+      dropZone.addEventListener("dragleave", (e) => {
+        e.preventDefault();
         dropZone.classList.remove("bg-indigo-50", "border-indigo-500");
       });
-      dropZone.addEventListener("drop", (event) => {
-        event.preventDefault(); // 阻止浏览器默认打开文件的行为
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
         dropZone.classList.remove("bg-indigo-50", "border-indigo-500");
-        if (event.dataTransfer.files.length > 0) {
-          handleFile(event.dataTransfer.files[0]);
-        }
+        if (e.dataTransfer.files.length > 0)
+          handleFile(e.dataTransfer.files[0]);
       });
 
-      // 下载按钮点击
+      excludeHiddenCheckbox.addEventListener("change", () => {
+        exceptionSection.style.display = excludeHiddenCheckbox.checked
+          ? "block"
+          : "none";
+      });
+
       downloadBtn.addEventListener("click", () => {
         if (processedZip && !downloadBtn.disabled) {
           downloadBtn.disabled = true;
           downloadBtnText.textContent = "正在生成下载文件...";
-
           processedZip
             .generateAsync({ type: "blob" })
-            .then(function (content) {
-              // 使用 FileSaver.js 来保存文件
+            .then((content) => {
               saveAs(content, `${originalFileName}-flattened.zip`);
               downloadBtn.disabled = false;
               downloadBtnText.textContent = "下载处理后的 .zip 包";
@@ -317,17 +431,18 @@
         }
       });
 
-      // 重置按钮点击
       resetBtn.addEventListener("click", () => {
         uploadSection.classList.remove("hidden");
         resultSection.classList.add("hidden");
-
-        // 重置状态
-        fileUpload.value = ""; // 清空文件选择
+        fileUpload.value = "";
         processedZip = null;
         fileList.innerHTML = "";
         summaryText.textContent = "";
       });
+
+      exceptionSection.style.display = excludeHiddenCheckbox.checked
+        ? "block"
+        : "none";
     </script>
   </body>
 </html>

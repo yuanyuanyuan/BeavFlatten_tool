@@ -39,16 +39,67 @@
   <body class="bg-slate-100 text-slate-800 antialiased">
     <!-- Header -->
     <header
-      class="bg-gradient-to-r from-slate-800 to-slate-900 text-white shadow-lg"
+      class="relative bg-gradient-to-r from-slate-800 to-slate-900 text-white shadow-lg"
     >
       <div class="container mx-auto px-4 py-6 text-center">
+        <!-- Language Switcher -->
+        <nav class="absolute top-4 right-4 z-20">
+          <div class="relative" id="lang-switcher">
+            <button
+              id="lang-menu-button"
+              class="flex items-center space-x-2 text-slate-300 hover:text-white transition-colors duration-300"
+            >
+              <svg
+                class="h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M10.5 21l-5.25-11.25L21 21m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12v-.008zm0-3.75h.008v.008H12v-.008zm0-3.75h.008v.008H12v-.008zM12 6h.008v.008H12V6z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span id="current-lang-text" class="font-semibold">EN</span>
+            </button>
+            <div
+              id="lang-menu"
+              class="hidden absolute right-0 mt-2 w-32 bg-slate-800 rounded-lg shadow-lg py-1 ring-1 ring-slate-700"
+            >
+              <a
+                href="?lang=en"
+                class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                >English</a
+              >
+              <a
+                href="?lang=zh-CN"
+                class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                >简体中文</a
+              >
+              <a
+                href="?lang=zh-TW"
+                class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 transition-colors"
+                >繁體中文</a
+              >
+            </div>
+          </div>
+        </nav>
         <h1 class="text-4xl font-extrabold tracking-tight">
           <span data-i18n="deepseek.title"
-            >目录结构扁平化工具 (DeepSeek Version)</span
+            >Directory Flattener Tool (DeepSeek Version)</span
           >
         </h1>
         <p class="mt-2 text-lg text-slate-300" data-i18n="deepseek.subtitle">
-          将ZIP压缩包中的目录结构扁平化，支持配置例外列表
+          Flatten directory structures from ZIP archives, with support for
+          configurable exception lists.
         </p>
       </div>
     </header>
@@ -84,14 +135,14 @@
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                   ></path>
                 </svg>
-                配置选项
+                Configuration Options
               </h3>
               <div>
                 <label
                   for="exceptions"
                   class="block text-sm font-medium text-slate-700"
                   data-i18n="deepseek.config.exceptionsLabel"
-                  >例外列表 (逗号分隔)</label
+                  >Exception List (comma-separated)</label
                 >
                 <input
                   type="text"
@@ -103,7 +154,8 @@
                   class="mt-2 text-xs text-slate-500"
                   data-i18n="deepseek.config.exceptionsHelp"
                 >
-                  输入不想排除的文件或目录名，多个用逗号分隔。
+                  Enter names of files or directories you don't want to exclude,
+                  separated by commas.
                 </p>
               </div>
             </div>
@@ -114,7 +166,7 @@
                 for="zipFile"
                 class="block text-sm font-medium text-slate-700"
                 data-i18n="deepseek.fileInput.label"
-                >选择ZIP文件</label
+                >Select ZIP File</label
               >
               <input
                 type="file"
@@ -132,7 +184,7 @@
                 disabled
               >
                 <span id="btnText" data-i18n="deepseek.buttons.process"
-                  >处理文件</span
+                  >Process File</span
                 >
                 <svg
                   id="processingSpinner"
@@ -170,7 +222,7 @@
                   class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 >
                   <span data-i18n="deepseek.buttons.download"
-                    >下载处理后的文件</span
+                    >Download Processed File</span
                   >
                 </button>
               </div>
@@ -188,7 +240,7 @@
                     class="text-sm font-medium text-slate-500"
                     data-i18n="deepseek.stats.total"
                   >
-                    总文件数
+                    Total Files
                   </div>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-lg">
@@ -202,7 +254,7 @@
                     class="text-sm font-medium text-slate-500"
                     data-i18n="deepseek.stats.processed"
                   >
-                    已处理
+                    Processed
                   </div>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-lg">
@@ -216,7 +268,7 @@
                     class="text-sm font-medium text-slate-500"
                     data-i18n="deepseek.stats.excluded"
                   >
-                    已排除
+                    Excluded
                   </div>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-lg">
@@ -230,7 +282,7 @@
                     class="text-sm font-medium text-slate-500"
                     data-i18n="deepseek.stats.exceptions"
                   >
-                    例外文件
+                    Exceptions
                   </div>
                 </div>
               </div>
@@ -242,7 +294,7 @@
                     class="font-semibold mb-2"
                     data-i18n="deepseek.preview.resultsTitle"
                   >
-                    处理结果预览:
+                    Processing Results Preview:
                   </h5>
                   <div
                     class="h-64 overflow-y-auto bg-slate-900 text-white font-mono text-xs rounded-lg p-4"
@@ -256,7 +308,7 @@
                     class="font-semibold mb-2"
                     data-i18n="deepseek.preview.watermarkTitle"
                   >
-                    署名文件预览:
+                    Signature File Preview:
                   </h5>
                   <div
                     class="h-64 overflow-y-auto bg-slate-50 border rounded-lg p-4 text-xs whitespace-pre-wrap"
@@ -295,7 +347,7 @@
               href="../index.html"
               class="hover:underline"
               data-i18n="deepseek.footer.back"
-              >返回主页</a
+              >Back to Home</a
             >
           </p>
         </footer>
@@ -348,7 +400,7 @@
           if (!zipFileInput.files.length) return;
 
           const file = zipFileInput.files[0];
-          btnText.textContent = "处理中...";
+          btnText.textContent = "Processing...";
           processingSpinner.classList.remove("hidden");
           processBtn.disabled = true;
           errorAlert.classList.add("hidden");
@@ -436,9 +488,9 @@
             // 显示处理结果
             resultSection.classList.remove("hidden");
           } catch (error) {
-            showError(`处理文件时出错: ${error.message}`);
+            showError(`Error processing file: ${error.message}`);
           } finally {
-            btnText.textContent = "处理文件";
+            btnText.textContent = "Process File";
             processingSpinner.classList.add("hidden");
             processBtn.disabled = false;
           }
@@ -451,7 +503,7 @@
           try {
             this.disabled = true;
             this.innerHTML =
-              "<i class='fas fa-spinner fa-spin me-2'></i> 正在生成文件...";
+              "<i class='fas fa-spinner fa-spin me-2'></i> Generating file...";
 
             // 生成ZIP文件
             const content = await processedZip.generateAsync({ type: "blob" });
@@ -470,32 +522,31 @@
               URL.revokeObjectURL(url);
               this.disabled = false;
               this.innerHTML =
-                "<i class='fas fa-download me-2'></i> 下载处理后的文件";
+                "<i class='fas fa-download me-2'></i> Download Processed File";
             }, 100);
           } catch (error) {
-            showError(`生成下载文件时出错: ${error.message}`);
+            showError(`Error generating download file: ${error.message}`);
             this.disabled = false;
             this.innerHTML =
-              "<i class='fas fa-download me-2'></i> 下载处理后的文件";
+              "<i class='fas fa-download me-2'></i> Download Processed File";
           }
         });
 
         // 添加品牌水印文件
         async function addBrandWatermark() {
           const watermarkFilename = "_credit_by_stark.txt";
-          const watermarkContent = `此压缩包由 Stark Yuan 创建的"压缩包扁平化工具"生成。
+          const watermarkContent = `This ZIP archive was created by the "Directory Flattener Tool" from DeepSeek Version.
 
-工具特点：
-• 扁平化处理目录结构
-• 排除隐藏文件和目录
-• 支持自定义例外列表
-• 完全在浏览器中运行
+Features:
+• Flattens directory structures
+• Excludes hidden files and directories
+• Supports configurable exception lists
+• Runs entirely in the browser
 
-了解更多或获取该工具，请访问：
+Learn more or get this tool, visit:
 https://github.com/yuanyuanyuan
 
 ---------------------------
-由 Stark 精心打造
 Crafted with ❤️ by Stark Yuan`;
 
           // 添加水印文件到ZIP
@@ -580,12 +631,12 @@ Crafted with ❤️ by Stark Yuan`;
 
           switch (status) {
             case "excluded":
-              statusBadge = `<span class="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full" data-i18n="deepseek.preview.excluded">已排除</span>`;
+              statusBadge = `<span class="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full" data-i18n="deepseek.preview.excluded">Excluded</span>`;
               fileItem.classList.add("text-slate-400");
               arrow = ""; // No arrow for excluded files
               break;
             case "exception":
-              statusBadge = `<span class="px-2 py-1 text-xs font-medium text-amber-800 bg-amber-100 rounded-full" data-i18n="deepseek.preview.exception">例外</span>`;
+              statusBadge = `<span class="px-2 py-1 text-xs font-medium text-amber-800 bg-amber-100 rounded-full" data-i18n="deepseek.preview.exception">Exception</span>`;
               break;
           }
 

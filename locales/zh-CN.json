@@ -23,5 +23,17 @@
   "deepseek.preview.watermarkTitle": "署名文件预览:",
   "deepseek.preview.excluded": "已排除",
   "deepseek.preview.exception": "例外",
-  "deepseek.footer.back": "返回主页"
+  "deepseek.footer.back": "返回主页",
+
+  "gemini.title": "狸压侠 (GeminiPro 版本)",
+  "gemini.subtitle": "智能拖拽上传，即刻压平你的目录结构。",
+  "gemini.upload.drag": "将 .zip 文件拖到此处，或",
+  "gemini.upload.click": "点击上传",
+  "gemini.upload.hint": "支持 .zip 格式，建议文件大小 < 200MB",
+  "gemini.config.exclude": "启用智能排除 (隐藏文件、系统文件等)",
+  "gemini.config.exceptions": "例外列表 (不排除以下项目，用逗号分隔)",
+  "gemini.buttons.download": "准备下载",
+  "gemini.buttons.reset": "处理其他文件",
+  "gemini.preview.title": "处理后的文件列表:",
+  "gemini.footer.back": "返回主页"
 }

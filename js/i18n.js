@@ -50,12 +50,19 @@ document.addEventListener("DOMContentLoaded", () => {
      * @param {string} lang - 语言代码 (e.g., 'en')
      */
     async loadTranslations(lang) {
-      if (lang === this.defaultLang) {
-        // 如果是默认语言，则无需加载，因为内容已在HTML中硬编码
-        return {};
-      }
       try {
-        const response = await fetch(`locales/${lang}.json`);
+        // 智能定位：找到 i18n.js 脚本自身，以计算正确的 locales 文件夹路径
+        const i18nScript = document.querySelector('script[src*="js/i18n.js"]');
+        if (!i18nScript) {
+          throw new Error(
+            "Could not find the i18n script tag to determine asset path."
+          );
+        }
+
+        // 动态构建到 locales 文件的正确 URL
+        const localeUrl = new URL(`../locales/${lang}.json`, i18nScript.src);
+
+        const response = await fetch(localeUrl);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
