@@ -50,9 +50,12 @@ There's no installation required! Simply visit our official website:
 5.  **Process**: Click the "Process" button.
 6.  **Download**: Download your newly flattened `.zip` file!
 
-*(A placeholder for a GIF or short video demonstrating the process)*
+## Demo
+
 <div align="center">
-  <img src="https://your-url-here.com/assets/demo.gif" alt="BeavFlatten Demo" width="700"/>
+  <video src="assets/demo-03.mp4.mp4" width="700" controls autoplay muted loop playsinline>
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 ## Roadmap

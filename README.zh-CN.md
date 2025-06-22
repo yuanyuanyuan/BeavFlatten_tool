@@ -50,9 +50,12 @@
 5.  **处理**: 点击"处理"按钮。
 6.  **下载**: 下载您全新的、已扁平化的 `.zip` 文件！
 
-*(这里是演示过程的 GIF 或短视频占位符)*
+## 演示
+
 <div align="center">
-  <img src="https://your-url-here.com/assets/demo.gif" alt="BeavFlatten Demo" width="700"/>
+  <video src="assets/demo-03.mp4.mp4" width="700" controls autoplay muted loop playsinline>
+    您的浏览器不支持视频标签。
+  </video>
 </div>
 
 ## 路线图
