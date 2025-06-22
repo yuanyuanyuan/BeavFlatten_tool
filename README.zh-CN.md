@@ -53,9 +53,11 @@
 ## 演示
 
 <div align="center">
-  <video src="assets/demo-03.mp4.mp4" width="700" controls autoplay muted loop playsinline>
-    您的浏览器不支持视频标签。
-  </video>
+
+[![BeavFlatten 演示](assets/demo-01.png)](https://yuanyuanyuan.github.io/BeavFlatten_tool/)
+
+*点击图片，立即体验！*
+
 </div>
 
 ## 路线图

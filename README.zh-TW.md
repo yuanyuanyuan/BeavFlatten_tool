@@ -53,9 +53,11 @@
 ## 演示
 
 <div align="center">
-  <video src="assets/demo-03.mp4.mp4" width="700" controls autoplay muted loop playsinline>
-    您的瀏覽器不支援影片標籤。
-  </video>
+
+[![BeavFlatten 演示](assets/demo-01.png)](https://yuanyuanyuan.github.io/BeavFlatten_tool/)
+
+*點擊圖片，立即體驗！*
+
 </div>
 
 ## 路線圖
