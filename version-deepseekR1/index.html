@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>目录结构扁平化工具 - 品牌化升级</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+      :root {
+        --primary: #3498db;
+        --secondary: #2c3e50;
+        --success: #2ecc71;
+        --warning: #f39c12;
+        --danger: #e74c3c;
+        --light: #f8f9fa;
+        --dark: #343a40;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        min-height: 100vh;
+        padding: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: none;
+        margin-bottom: 25px;
+        transition: transform 0.3s;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+      }
+
+      .header {
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 25px 0;
+        text-align: center;
+        margin-bottom: 30px;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71, #3498db);
+      }
+
+      .header h1 {
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .preview-area {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #f8f9fa;
+      }
+
+      .file-item {
+        padding: 10px 15px;
+        margin-bottom: 8px;
+        background-color: #e9f7fe;
+        border-radius: 5px;
+        border-left: 4px solid var(--primary);
+        font-family: monospace;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+      }
+
+      .file-item:hover {
+        background-color: #d1ecfa;
+      }
+
+      .file-item.hidden {
+        background-color: #f8f9fa;
+        color: #adb5bd;
+        border-left: 4px solid #adb5bd;
+      }
+
+      .file-item.exception {
+        background-color: #fff3cd;
+        border-left: 4px solid var(--warning);
+        color: #856404;
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        border: none;
+        transition: all 0.3s;
+        padding: 12px 25px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(45deg, #2980b9, #1a252f);
+        transform: scale(1.03);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .step-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        margin-right: 15px;
+        flex-shrink: 0;
+      }
+
+      .step-card {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .highlight {
+        background-color: #fff9db;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 4px solid var(--warning);
+      }
+
+      .example {
+        background-color: #e9ecef;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+
+      .file-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      .exclusion-list {
+        background-color: #fff3cd;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 4px solid var(--warning);
+      }
+
+      .config-box {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 25px;
+      }
+
+      .stats-card {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .stat-item {
+        padding: 15px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        flex: 1;
+        margin: 0 10px;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+
+      .badge-exception {
+        background-color: var(--warning);
+        color: white;
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 20px;
+      }
+
+      .tool-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .feature-card {
+        flex: 1;
+        min-width: 200px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+
+      .feature-card i {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 15px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #6c757d;
+        margin-top: 30px;
+        font-size: 0.9rem;
+        position: relative;
+      }
+
+      .creator-signature {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #eaeaea;
+      }
+
+      .creator-signature a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: all 0.3s;
+        font-weight: 600;
+      }
+
+      .creator-signature a:hover {
+        color: var(--secondary);
+        text-decoration: underline;
+      }
+
+      .watermark-preview {
+        background-color: #e8f4fd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-family: monospace;
+        font-size: 0.85rem;
+        white-space: pre-wrap;
+      }
+
+      @media (max-width: 768px) {
+        .stats-card {
+          flex-direction: column;
+        }
+
+        .stat-item {
+          margin: 10px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <h1><i class="fas fa-folder-open me-3"></i>目录结构扁平化工具</h1>
+        <p>将ZIP压缩包中的目录结构扁平化，支持配置例外列表</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="config-box">
+                <h3 class="mb-4"><i class="fas fa-cog me-2"></i>配置选项</h3>
+
+                <div class="mb-4">
+                  <label for="exceptions" class="form-label"
+                    >例外列表（逗号分隔）</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="exceptions"
+                    value=".cursor"
+                  />
+                  <div class="form-text">
+                    输入不想排除的文件或目录名，多个用逗号分隔。例如：.cursor,
+                    .config, custom
+                  </div>
+                </div>
+
+                <div class="exclusion-list">
+                  <h5><i class="fas fa-ban me-2"></i>排除规则</h5>
+                  <p>以下内容会被自动排除（除非在例外列表中）：</p>
+                  <ul>
+                    <li>
+                      所有以 <code>.</code> 开头的文件和目录（如
+                      <code>.gitignore</code>）
+                    </li>
+                    <li>
+                      系统文件（<code>.DS_Store</code>, <code>thumbs.db</code>）
+                    </li>
+                    <li>
+                      版本控制目录（<code>.git</code>, <code>.svn</code>）
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="zipFile" class="form-label">选择ZIP文件</label>
+                <input
+                  class="form-control"
+                  type="file"
+                  id="zipFile"
+                  accept=".zip"
+                />
+              </div>
+
+              <div class="d-grid mb-4">
+                <button id="processBtn" class="btn btn-primary btn-lg" disabled>
+                  <span id="btnText"
+                    ><i class="fas fa-gear me-2"></i>处理文件</span
+                  >
+                  <span
+                    id="processingSpinner"
+                    class="spinner-border spinner-border-sm d-none"
+                    role="status"
+                  ></span>
+                </button>
+              </div>
+
+              <div id="resultSection" class="d-none">
+                <div class="d-grid mb-3">
+                  <button id="downloadBtn" class="btn btn-success btn-lg">
+                    <i class="fas fa-download me-2"></i> 下载处理后的文件
+                  </button>
+                </div>
+
+                <div class="stats-card">
+                  <div class="stat-item">
+                    <div class="stat-number" id="totalFiles">0</div>
+                    <div class="stat-label">总文件数</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-number" id="processedFiles">0</div>
+                    <div class="stat-label">已处理文件</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-number" id="excludedFiles">0</div>
+                    <div class="stat-label">已排除文件</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-number" id="exceptionFiles">0</div>
+                    <div class="stat-label">例外文件</div>
+                  </div>
+                </div>
+
+                <h5 class="mt-4">
+                  <i class="fas fa-eye me-2"></i>处理结果预览:
+                </h5>
+                <div class="preview-area">
+                  <div id="filePreview" class="file-list">
+                    <!-- 文件预览将在这里显示 -->
+                  </div>
+                </div>
+
+                <h5 class="mt-4">
+                  <i class="fas fa-file-alt me-2"></i>署名文件预览:
+                </h5>
+                <div class="watermark-preview" id="watermarkPreview">
+                  <!-- 署名文件内容预览将在这里显示 -->
+                </div>
+              </div>
+
+              <div
+                id="errorAlert"
+                class="alert alert-danger d-none mt-3"
+                role="alert"
+              ></div>
+            </div>
+          </div>
+
+          <div class="tool-features">
+            <div class="feature-card">
+              <i class="fas fa-bolt"></i>
+              <h5>快速处理</h5>
+              <p>即时处理压缩文件，无需上传服务器</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-shield-alt"></i>
+              <h5>隐私保护</h5>
+              <p>所有操作在浏览器中完成</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-sliders-h"></i>
+              <h5>灵活配置</h5>
+              <p>自定义例外列表满足特殊需求</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title mb-4">
+                <i class="fas fa-lightbulb me-2"></i>使用示例
+              </h3>
+
+              <div class="example">
+                <p>原始结构示例：</p>
+                <p class="mb-1">
+                  ├── .gitignore <span class="text-danger">(排除)</span>
+                </p>
+                <p class="mb-1">
+                  ├── .config/ <span class="text-danger">(排除)</span>
+                </p>
+                <p class="mb-1">
+                  │ └── settings.json <span class="text-danger">(排除)</span>
+                </p>
+                <p class="mb-1">
+                  ├── .cursor/ <span class="badge-exception">(例外)</span>
+                </p>
+                <p class="mb-1">│ └── config.json → .cursor--config.json</p>
+                <p class="mb-1">├── docs/</p>
+                <p class="mb-1">│ └── README.md → docs--README.md</p>
+                <p class="mb-1">└── src/</p>
+                <p class="mb-1">└── main.js → src--main.js</p>
+              </div>
+
+              <div class="highlight">
+                <h5><i class="fas fa-cogs me-2"></i> 扁平化规则</h5>
+                <ul>
+                  <li>目录分隔符替换为 <code>--</code></li>
+                  <li>
+                    示例: <code>folder/subfolder/file.txt</code> →
+                    <code>folder--subfolder--file.txt</code>
+                  </li>
+                  <li>隐藏文件和目录会被自动排除（除非在例外列表中）</li>
+                  <li>例外列表中的项会被处理并保留</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <p>本工具完全在浏览器中运行，您的文件不会上传到任何服务器</p>
+        <div class="creator-signature">
+          <p>
+            Crafted with ❤️ by
+            <a href="https://github.com/yuanyuanyuan" target="_blank"
+              >Stark Yuan</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // =================================================================
+      // Zip Flattener Tool - Version 1.1 (Branded by Stark Yuan)
+      //
+      // A client-side tool to flatten ZIP archives with custom exclusions
+      // and brand signature features.
+      //
+      // Author: Stark Yuan
+      // GitHub: https://github.com/yuanyuanyuan
+      // =================================================================
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const zipFileInput = document.getElementById("zipFile");
+        const processBtn = document.getElementById("processBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const filePreview = document.getElementById("filePreview");
+        const resultSection = document.getElementById("resultSection");
+        const errorAlert = document.getElementById("errorAlert");
+        const btnText = document.getElementById("btnText");
+        const processingSpinner = document.getElementById("processingSpinner");
+        const exceptionsInput = document.getElementById("exceptions");
+        const watermarkPreview = document.getElementById("watermarkPreview");
+
+        // 统计元素
+        const totalFilesEl = document.getElementById("totalFiles");
+        const processedFilesEl = document.getElementById("processedFiles");
+        const excludedFilesEl = document.getElementById("excludedFiles");
+        const exceptionFilesEl = document.getElementById("exceptionFiles");
+
+        let processedZip = null;
+        let fileStats = {
+          totalFiles: 0,
+          processedFiles: 0,
+          excludedFiles: 0,
+          exceptionFiles: 0,
+        };
+
+        // 当用户选择文件后启用处理按钮
+        zipFileInput.addEventListener("change", function () {
+          processBtn.disabled = !this.files.length;
+        });
+
+        // 处理按钮点击事件
+        processBtn.addEventListener("click", async function () {
+          if (!zipFileInput.files.length) return;
+
+          const file = zipFileInput.files[0];
+          btnText.innerHTML =
+            "<i class='fas fa-spinner fa-spin me-2'></i>处理中...";
+          processingSpinner.classList.remove("d-none");
+          processBtn.disabled = true;
+          errorAlert.classList.add("d-none");
+          filePreview.innerHTML = "";
+          watermarkPreview.innerHTML = "";
+
+          try {
+            // 重置统计信息
+            fileStats = {
+              totalFiles: 0,
+              processedFiles: 0,
+              excludedFiles: 0,
+              exceptionFiles: 0,
+            };
+
+            // 解析例外列表
+            const exceptions = exceptionsInput.value
+              .split(",")
+              .map((item) => item.trim())
+              .filter((item) => item);
+
+            // 添加默认例外（如果不存在）
+            if (!exceptions.includes(".cursor")) {
+              exceptions.push(".cursor");
+            }
+
+            // 读取ZIP文件
+            const zip = await JSZip.loadAsync(file);
+
+            // 创建新ZIP用于存储扁平化后的文件
+            processedZip = new JSZip();
+
+            // 遍历ZIP中的所有文件
+            const filePromises = [];
+            zip.forEach(async (relativePath, zipEntry) => {
+              // 跳过目录
+              if (zipEntry.dir) return;
+
+              fileStats.totalFiles++;
+
+              // 检查是否隐藏文件/目录
+              const isExceptional = isInExceptions(relativePath, exceptions);
+              const isExcluded = !isExceptional && isHidden(relativePath);
+
+              if (isExcluded) {
+                fileStats.excludedFiles++;
+                addFilePreview(relativePath, "excluded");
+                return;
+              }
+
+              if (isExceptional) {
+                fileStats.exceptionFiles++;
+              }
+
+              // 扁平化文件名
+              const flatName = flattenPath(relativePath);
+
+              // 处理文件名冲突
+              const finalName = resolveNameConflict(flatName, processedZip);
+
+              // 添加文件预览
+              addFilePreview(
+                relativePath,
+                isExceptional ? "exception" : "normal",
+                finalName
+              );
+
+              // 获取文件内容并添加到新ZIP
+              filePromises.push(
+                zipEntry.async("blob").then((content) => {
+                  processedZip.file(finalName, content);
+                  fileStats.processedFiles++;
+                })
+              );
+            });
+
+            // 等待所有文件处理完成
+            await Promise.all(filePromises);
+
+            // 添加品牌水印文件
+            await addBrandWatermark();
+
+            // 更新统计显示
+            updateStats();
+
+            // 显示处理结果
+            resultSection.classList.remove("d-none");
+          } catch (error) {
+            showError(`处理文件时出错: ${error.message}`);
+          } finally {
+            btnText.innerHTML = "<i class='fas fa-gear me-2'></i>处理文件";
+            processingSpinner.classList.add("d-none");
+            processBtn.disabled = false;
+          }
+        });
+
+        // 下载按钮点击事件
+        downloadBtn.addEventListener("click", async function () {
+          if (!processedZip) return;
+
+          try {
+            this.disabled = true;
+            this.innerHTML =
+              "<i class='fas fa-spinner fa-spin me-2'></i> 正在生成文件...";
+
+            // 生成ZIP文件
+            const content = await processedZip.generateAsync({ type: "blob" });
+
+            // 创建下载链接
+            const url = URL.createObjectURL(content);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "flattened-files.zip";
+            document.body.appendChild(a);
+            a.click();
+
+            // 清理
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              this.disabled = false;
+              this.innerHTML =
+                "<i class='fas fa-download me-2'></i> 下载处理后的文件";
+            }, 100);
+          } catch (error) {
+            showError(`生成下载文件时出错: ${error.message}`);
+            this.disabled = false;
+            this.innerHTML =
+              "<i class='fas fa-download me-2'></i> 下载处理后的文件";
+          }
+        });
+
+        // 添加品牌水印文件
+        async function addBrandWatermark() {
+          const watermarkFilename = "_credit_by_stark.txt";
+          const watermarkContent = `此压缩包由 Stark Yuan 创建的"压缩包扁平化工具"生成。
+
+工具特点：
+• 扁平化处理目录结构
+• 排除隐藏文件和目录
+• 支持自定义例外列表
+• 完全在浏览器中运行
+
+了解更多或获取该工具，请访问：
+https://github.com/yuanyuanyuan
+
+---------------------------
+由 Stark 精心打造
+Crafted with ❤️ by Stark Yuan`;
+
+          // 添加水印文件到ZIP
+          processedZip.file(watermarkFilename, watermarkContent);
+
+          // 更新文件预览
+          watermarkPreview.textContent = watermarkContent;
+
+          // 更新统计
+          fileStats.processedFiles++;
+          fileStats.totalFiles++;
+          updateStats();
+        }
+
+        // 判断是否在例外列表中
+        function isInExceptions(path, exceptions) {
+          const parts = path.split("/");
+
+          // 检查路径中的每个部分是否在例外列表中
+          for (const part of parts) {
+            if (exceptions.includes(part)) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
+        // 判断是否隐藏文件/目录
+        function isHidden(path) {
+          const parts = path.split("/");
+
+          // 检查路径中的每个部分
+          for (const part of parts) {
+            // 排除以点开头的文件和目录（隐藏文件/目录）
+            if (part.startsWith(".") && part !== "." && part !== "..") {
+              return true;
+            }
+
+            // 排除常见系统文件
+            if ([".DS_Store", "thumbs.db", "desktop.ini"].includes(part)) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
+        // 扁平化路径
+        function flattenPath(path) {
+          // 替换所有斜杠为 --
+          return path.replace(/\//g, "--");
+        }
+
+        // 解决文件名冲突
+        function resolveNameConflict(name, zip) {
+          if (!zip.files[name]) return name;
+
+          // 分离文件名和扩展名
+          const dotIndex = name.lastIndexOf(".");
+          let baseName = name;
+          let extension = "";
+
+          if (dotIndex > 0) {
+            baseName = name.substring(0, dotIndex);
+            extension = name.substring(dotIndex);
+          }
+
+          // 尝试添加序号
+          let counter = 1;
+          let newName;
+          do {
+            newName = `${baseName}-${counter}${extension}`;
+            counter++;
+          } while (zip.files[newName]);
+
+          return newName;
+        }
+
+        // 添加文件预览
+        function addFilePreview(originalPath, status, newName = null) {
+          const fileItem = document.createElement("div");
+          fileItem.className = `file-item ${
+            status === "excluded" ? "hidden" : ""
+          } ${status === "exception" ? "exception" : ""}`;
+
+          if (status === "excluded") {
+            fileItem.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div>${originalPath}</div>
+                            <div class="badge bg-danger">已排除</div>
+                        </div>
+                    `;
+          } else if (status === "exception") {
+            fileItem.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div>${originalPath}</div>
+                            <div class="d-flex align-items-center">
+                                <div class="badge-exception me-2">例外</div>
+                                <div class="text-success">→ ${newName}</div>
+                            </div>
+                        </div>
+                    `;
+          } else {
+            fileItem.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div>${originalPath}</div>
+                            <div class="text-success">→ ${newName}</div>
+                        </div>
+                    `;
+          }
+
+          filePreview.appendChild(fileItem);
+        }
+
+        // 更新统计显示
+        function updateStats() {
+          totalFilesEl.textContent = fileStats.totalFiles;
+          processedFilesEl.textContent = fileStats.processedFiles;
+          excludedFilesEl.textContent = fileStats.excludedFiles;
+          exceptionFilesEl.textContent = fileStats.exceptionFiles;
+        }
+
+        // 显示错误信息
+        function showError(message) {
+          errorAlert.textContent = message;
+          errorAlert.classList.remove("d-none");
+        }
+
+        // 初始示例预览
+        addExamplePreview();
+
+        function addExamplePreview() {
+          const examples = [
+            {
+              original: "folder/subfolder/file.txt",
+              newName: "folder--subfolder--file.txt",
+              status: "normal",
+            },
+            {
+              original: "docs/README.md",
+              newName: "docs--README.md",
+              status: "normal",
+            },
+            { original: ".gitignore", newName: "", status: "excluded" },
+            {
+              original: ".config/settings.json",
+              newName: "",
+              status: "excluded",
+            },
+            {
+              original: ".cursor/config.json",
+              newName: ".cursor--config.json",
+              status: "exception",
+            },
+            {
+              original: "src/main.js",
+              newName: "src--main.js",
+              status: "normal",
+            },
+          ];
+
+          examples.forEach((example) => {
+            addFilePreview(example.original, example.status, example.newName);
+          });
+
+          // 添加水印预览
+          watermarkPreview.textContent = `此压缩包由 Stark Yuan 创建的"压缩包扁平化工具"生成。
+
+了解更多或获取该工具，请访问：
+https://github.com/yuanyuanyuan
+
+---------------------------
+由 Stark 精心打造
+Crafted with ❤️ by Stark Yuan`;
+        }
+      });
+    </script>
+  </body>
+</html>
