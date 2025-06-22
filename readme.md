@@ -52,11 +52,7 @@ There's no installation required! Simply visit our official website:
 
 ## Demo
 
-<div align="center">
-  <video src="assets/demo-03.mp4.mp4" width="700" controls autoplay muted loop playsinline>
-    Your browser does not support the video tag.
-  </video>
-</div>
+[![BeavFlatten Demo - Click to Play](assets/demo-01.png)](assets/demo-03.mp4.mp4)
 
 ## Roadmap
 
