@@ -7,7 +7,7 @@
     <a href="https://yuanyuanyuan.github.io/BeavFlatten_tool/"><strong>Explore the Tool »</strong></a>
     <br />
     <br />
-    <a href="README.md">English</a> | <a href="README.zh-CN.md">简体中文</a> | <a href="README.zh-TW.md">繁體中文</a>
+    <a href="readme.md">English</a> | <a href="README.zh-CN.md">简体中文</a> | <a href="README.zh-TW.md">繁體中文</a>
   </p>
 </div>
 
@@ -118,9 +118,12 @@ We value your feedback to improve BeavFlatten! Here's how you can share your tho
 - 💡 有想法？[建议新功能](https://github.com/yuanyuanyuan/BeavFlatten_tool/issues/new?template=feature_request.md) (中文用户)  
 - 💡 Have an idea? [Suggest a feature](https://github.com/yuanyuanyuan/BeavFlatten_tool/issues/new?template=feature_request.md) (Global)
 
-or use notion to post your idea~
+### or use notion to post your idea~
 
 [![Notion Feedback Board](https://img.shields.io/badge/Notion-Share_Feedback-000000?style=for-the-badge&logo=notion)](https://gentle-agustinia-a28.notion.site/ebd/22765216c786808da0d1d97e0687363b)
+
+
+[feishu](https://tyyvx5g86p.feishu.cn/share/base/form/shrcnvIeaD3Lhvdf2XKvQJRIpDh)
 
 ### Direct Contact
 For private feedback or questions, twitter/X： https://x.com/StarkYuan_Pro
