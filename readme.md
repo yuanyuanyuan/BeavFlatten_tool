@@ -90,7 +90,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-Stark Yuan - [yuanyuanyuan (at) example.com](mailto:yuanyuanyuan@example.com)
+Stark Yuan]https://x.com/StarkYuan_Pro)
 
 Project Link: [https://github.com/yuanyuanyuan/BeavFlatten_tool](https://github.com/yuanyuanyuan/BeavFlatten_tool)
 
@@ -105,3 +105,28 @@ Project Link: [https://github.com/yuanyuanyuan/BeavFlatten_tool](https://github.
 <div align="center">
   <p>Crafted with ❤️ by <a href="https://github.com/yuanyuanyuan">Stark Yuan</a></p>
 </div>
+
+
+## Feedback
+
+We value your feedback to improve BeavFlatten! Here's how you can share your thoughts:
+
+### Quick Feedback
+- 👍 Like this project? Give it a star!
+- 🐛 发现Bug？[提交问题](https://github.com/yuanyuanyuan/BeavFlatten_tool/issues) (中文用户)
+- 🐛 Found a bug? [Open an issue](https://github.com/yuanyuanyuan/BeavFlatten_tool/issues) (Global)
+- 💡 有想法？[建议新功能](https://github.com/yuanyuanyuan/BeavFlatten_tool/issues/new?template=feature_request.md) (中文用户)  
+- 💡 Have an idea? [Suggest a feature](https://github.com/yuanyuanyuan/BeavFlatten_tool/issues/new?template=feature_request.md) (Global)
+
+or use notion to post your idea~
+
+[![Notion Feedback Board](https://img.shields.io/badge/Notion-Share_Feedback-000000?style=for-the-badge&logo=notion)](https://gentle-agustinia-a28.notion.site/ebd/22765216c786808da0d1d97e0687363b)
+
+### Direct Contact
+For private feedback or questions, twitter/X： https://x.com/StarkYuan_Pro
+
+### Community
+Join our [Discussions](https://github.com/yuanyuanyuan/BeavFlatten_tool/discussions) to:
+- Ask questions
+- Share your use cases
+- Connect with other users
