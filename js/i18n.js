@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // 动态构建到 locales 文件的正确 URL
-        const localeUrl = new URL(`../locales/${lang}.json`, i18nScript.src);
+        const localeUrl = new URL(`https://yuanyuanyuan.github.io/BeavFlatten_tool/locales/${lang}.json`, i18nScript.src);
 
         const response = await fetch(localeUrl);
         if (!response.ok) {
